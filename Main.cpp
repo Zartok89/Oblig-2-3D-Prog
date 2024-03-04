@@ -8,8 +8,6 @@ namespace fs = std::filesystem;
 const unsigned int width = 1200;
 const unsigned int height = 1200;
 
-
-
 Vertex lightVertices[] =
 { //     COORDINATES     //
 	Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
@@ -36,33 +34,34 @@ GLuint lightIndices[] =
 	1, 4, 0,
 	4, 5, 6,
 	4, 6, 7
-
-
 };
-
 
 int main()
 {
 	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
 	std::vector<Vertex> VertexVectorBuilding;
-	std::vector<Vertex> VertexVectorWall;
 	std::vector<int> IndicesVectorBuilding;
-	std::vector<int> IndicesVectorWall;
-
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgHus.obj", "HusFileVert.txt","HusFileFace.txt" );
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgVegg.obj", "VeggFileVert.txt","VeggFileFace.txt" );
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgHus.obj", "HusFileVert.txt", "HusFileFace.txt");
 	ReadWritePTR->FromDataToVertexVector("HusFileVert.txt", VertexVectorBuilding);
-	ReadWritePTR->FromDataToVertexVector("VeggFileVert.txt", VertexVectorWall);
 	ReadWritePTR->FromDataToIndicesVector("HusFileFace.txt", IndicesVectorBuilding);
+
+	std::vector<Vertex> VertexVectorWall;
+	std::vector<int> IndicesVectorWall;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgVegg.obj", "VeggFileVert.txt", "VeggFileFace.txt");
+	ReadWritePTR->FromDataToVertexVector("VeggFileVert.txt", VertexVectorWall);
 	ReadWritePTR->FromDataToIndicesVector("VeggFileFace.txt", IndicesVectorWall);
 
+	std::vector<Vertex> VertexVectorTestBygg;
+	std::vector<int> IndicesVectorTestBygg;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgTestObject.obj", "TestByggFileVert.txt", "TestByggFileFace.txt");
+	ReadWritePTR->FromDataToVertexVector("TestByggFileVert.txt", VertexVectorTestBygg);
+	ReadWritePTR->FromDataToIndicesVector("TestByggFileFace.txt", IndicesVectorTestBygg);
 
-	
 	// Initialize GLFW
 	glfwInit();
 
-	// Tell GLFW what version of OpenGL we are using 
+	// Tell GLFW what version of OpenGL we are using
 	// In this case we are using OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -88,7 +87,6 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-
 	/*
 	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
 	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
@@ -97,7 +95,6 @@ int main()
 	*/
 	std::string currentDir = (fs::current_path()).string();
 	std::string texPath = "/Resources/";
-
 
 	// Texture data
 	Texture textures[]
@@ -113,8 +110,6 @@ int main()
 		Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
 	};*/
 
-
-
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
@@ -126,12 +121,18 @@ int main()
 	Mesh Hus(HusVertices, HusIndices, HusTexture);
 
 	// Store mesh data in vectors for the mesh
-	std::vector <Vertex> verts1(std::begin(VertexVectorWall), std::end(VertexVectorWall));
-	std::vector <GLuint> ind(std::begin(IndicesVectorWall), std::end(IndicesVectorWall));
-	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Vertex> WallVertices(std::begin(VertexVectorWall), std::end(VertexVectorWall));
+	std::vector <GLuint> WallIndices(std::begin(IndicesVectorWall), std::end(IndicesVectorWall));
+	std::vector <Texture> WallTexture(textures, textures + sizeof(textures) / sizeof(Texture));
 	// Create floor mesh
-	Mesh Door(verts1, ind, tex);
+	Mesh Door(WallVertices, WallIndices, WallTexture);
 
+	// Store mesh data in vectors for the mesh
+	std::vector <Vertex> TestbyggVertices(std::begin(VertexVectorTestBygg), std::end(VertexVectorTestBygg));
+	std::vector <GLuint> TestbyggIndices(std::begin(IndicesVectorTestBygg), std::end(IndicesVectorTestBygg));
+	std::vector <Texture> TestbyggTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	// Create floor mesh
+	Mesh TestBygg(TestbyggVertices, TestbyggIndices, TestbyggTexture);
 
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
@@ -139,11 +140,7 @@ int main()
 	std::vector <Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
 	std::vector <GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
 	// Create light mesh
-	Mesh light(lightVerts, lightInd, tex);
-
-
-
-
+	Mesh light(lightVerts, lightInd, WallTexture);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -154,7 +151,6 @@ int main()
 	glm::mat4 objectModel = glm::mat4(1.0f);
 	objectModel = glm::translate(objectModel, objectPos);
 
-
 	lightShader.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -162,10 +158,6 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-
-
-	
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -181,26 +173,22 @@ int main()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 		// Handles camera inputs
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex Shader
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
-
 		// Draws different meshes
 		Hus.Draw(shaderProgram, camera);
 		Door.Draw(shaderProgram, camera);
+		TestBygg.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
-
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
-
-
 
 	// Delete all the objects we've created
 	shaderProgram.Delete();
@@ -211,11 +199,6 @@ int main()
 	glfwTerminate();
 	return 0;
 }
-
-
-
-
-
 
 //// Vertices coordinates
 //Vertex vertices[] =
@@ -299,7 +282,7 @@ int main()
 //	//Vertex{glm::vec3(-5.0, 	2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
 //	//Vertex{glm::vec3(-5.0,   -0.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
 //
-//	
+//
 //	/*Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
 //	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
 //	Vertex{glm::vec3( 1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
@@ -310,19 +293,18 @@ int main()
 //	Vertex{glm::vec3( 2.0f, -1.0f,  2.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}*/
 //};
 
-
 //// Indices for vertices order
 //GLuint indices[] =
 //{
-//3, 6, 2, 
-//7, 4, 6, 
-//5, 0, 4, 
-//6, 0, 2, 
-//3, 5, 7, 
-//3, 7, 6, 
-//7, 5, 4, 
-//5, 1, 0, 
-//6, 4, 0, 
+//3, 6, 2,
+//7, 4, 6,
+//5, 0, 4,
+//6, 0, 2,
+//3, 5, 7,
+//3, 7, 6,
+//7, 5, 4,
+//5, 1, 0,
+//6, 4, 0,
 //3, 1, 5
 //
 //};
