@@ -40,23 +40,23 @@ int main()
 {
 	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
-	std::vector<Vertex> VertexVectorBuilding;
-	std::vector<int> IndicesVectorBuilding;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgHus.obj", "HusFileVert.txt", "HusFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("HusFileVert.txt", VertexVectorBuilding);
-	ReadWritePTR->FromDataToIndicesVector("HusFileFace.txt", IndicesVectorBuilding);
+	std::vector<Vertex> VertexVectorSlott;
+	std::vector<int> IndicesVectorSlott;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgSlott.obj", "SlottFileVert.txt", "SlottFileFace.txt");
+	ReadWritePTR->FromDataToVertexVector("SlottFileVert.txt", VertexVectorSlott);
+	ReadWritePTR->FromDataToIndicesVector("SlottFileFace.txt", IndicesVectorSlott);
 
-	std::vector<Vertex> VertexVectorWall;
-	std::vector<int> IndicesVectorWall;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgVegg.obj", "VeggFileVert.txt", "VeggFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("VeggFileVert.txt", VertexVectorWall);
-	ReadWritePTR->FromDataToIndicesVector("VeggFileFace.txt", IndicesVectorWall);
+	std::vector<Vertex> VertexVectorBru;
+	std::vector<int> IndicesVectorBru;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBru.obj", "BruFileVert.txt", "BruFileFace.txt");
+	ReadWritePTR->FromDataToVertexVector("BruFileVert.txt", VertexVectorBru);
+	ReadWritePTR->FromDataToIndicesVector("BruFileFace.txt", IndicesVectorBru);
 
-	std::vector<Vertex> VertexVectorTestBygg;
-	std::vector<int> IndicesVectorTestBygg;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgTestObject.obj", "TestByggFileVert.txt", "TestByggFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("TestByggFileVert.txt", VertexVectorTestBygg);
-	ReadWritePTR->FromDataToIndicesVector("TestByggFileFace.txt", IndicesVectorTestBygg);
+	std::vector<Vertex> VertexVectorBakke;
+	std::vector<int> IndicesVectorBakke;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBakke.obj", "BakkeByggFileVert.txt", "BakkeByggFileFace.txt");
+	ReadWritePTR->FromDataToVertexVector("BakkeByggFileVert.txt", VertexVectorBakke);
+	ReadWritePTR->FromDataToIndicesVector("BakkeByggFileFace.txt", IndicesVectorBakke);
 
 	// Initialize GLFW
 	glfwInit();
@@ -114,25 +114,25 @@ int main()
 	Shader shaderProgram("default.vert", "default.frag");
 
 	// Store mesh data in vectors for the mesh
-	std::vector <Vertex> HusVertices(std::begin(VertexVectorBuilding), std::end(VertexVectorBuilding));
-	std::vector <GLuint> HusIndices(std::begin(IndicesVectorBuilding), std::end(IndicesVectorBuilding));
-	std::vector <Texture> HusTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Vertex> SlottVertices(std::begin(VertexVectorSlott), std::end(VertexVectorSlott));
+	std::vector <GLuint> SlottIndices(std::begin(IndicesVectorSlott), std::end(IndicesVectorSlott));
+	std::vector <Texture> SlottTexture(textures, textures + sizeof(textures) / sizeof(Texture));
 	// Create hus mesh
-	Mesh Hus(HusVertices, HusIndices, HusTexture);
+	Mesh Slott(SlottVertices, SlottIndices, SlottTexture);
 
 	// Store mesh data in vectors for the mesh
-	std::vector <Vertex> WallVertices(std::begin(VertexVectorWall), std::end(VertexVectorWall));
-	std::vector <GLuint> WallIndices(std::begin(IndicesVectorWall), std::end(IndicesVectorWall));
-	std::vector <Texture> WallTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Vertex> BruVertices(std::begin(VertexVectorBru), std::end(VertexVectorBru));
+	std::vector <GLuint> BruIndices(std::begin(IndicesVectorBru), std::end(IndicesVectorBru));
+	std::vector <Texture> BruTexture(textures, textures + sizeof(textures) / sizeof(Texture));
 	// Create floor mesh
-	Mesh Door(WallVertices, WallIndices, WallTexture);
+	Mesh Bru(BruVertices, BruIndices, BruTexture);
 
 	// Store mesh data in vectors for the mesh
-	std::vector <Vertex> TestbyggVertices(std::begin(VertexVectorTestBygg), std::end(VertexVectorTestBygg));
-	std::vector <GLuint> TestbyggIndices(std::begin(IndicesVectorTestBygg), std::end(IndicesVectorTestBygg));
-	std::vector <Texture> TestbyggTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
+	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
+	std::vector <Texture> BakkeTexture(textures, textures + sizeof(textures) / sizeof(Texture));
 	// Create floor mesh
-	Mesh TestBygg(TestbyggVertices, TestbyggIndices, TestbyggTexture);
+	Mesh TestBygg(BakkeVertices, BakkeIndices, BakkeTexture);
 
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
@@ -140,7 +140,7 @@ int main()
 	std::vector <Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
 	std::vector <GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
 	// Create light mesh
-	Mesh light(lightVerts, lightInd, WallTexture);
+	Mesh light(lightVerts, lightInd, BruTexture);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -179,8 +179,8 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		// Draws different meshes
-		Hus.Draw(shaderProgram, camera);
-		Door.Draw(shaderProgram, camera);
+		Slott.Draw(shaderProgram, camera);
+		Bru.Draw(shaderProgram, camera);
 		TestBygg.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
 
