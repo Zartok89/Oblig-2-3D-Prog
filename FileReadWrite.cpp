@@ -27,8 +27,6 @@ void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::s
 		{
 			if (Line == "v")
 			{
-				RemovingUnwantedChars(Line);
-
 				// Tokenize the line based on spaces
 				std::istringstream iss(Line);
 				std::vector<float> floats;
@@ -45,6 +43,8 @@ void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::s
 				}
 				MyFileWrite << std::endl;
 			}
+				RemovingUnwantedChars(Line);
+
 		}
 		MyFileRead.close();
 		MyFileWrite.close();
