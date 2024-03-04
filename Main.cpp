@@ -38,26 +38,23 @@ GLuint lightIndices[] =
 
 int main()
 {
+	//---------------------------------------------------------------------//
+	//----------------------- Filesystem to find folder -----------------------//
+	//---------------------------------------------------------------------//
+	std::string currentDir = (fs::current_path()).string();
+	std::string TexturePath = "/Resources/Textures/";
+	std::string ObjectPath = "/Resources/Objects/";
+
+
+	//---------------------------------------------------------------------//
+	//----------------------- Pointers -----------------------//
+	//---------------------------------------------------------------------//
 	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
-	std::vector<Vertex> VertexVectorSlott;
-	std::vector<int> IndicesVectorSlott;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgSlott.obj", "SlottFileVert.txt", "SlottFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("SlottFileVert.txt", VertexVectorSlott);
-	ReadWritePTR->FromDataToIndicesVector("SlottFileFace.txt", IndicesVectorSlott);
 
-	std::vector<Vertex> VertexVectorBru;
-	std::vector<int> IndicesVectorBru;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBru.obj", "BruFileVert.txt", "BruFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("BruFileVert.txt", VertexVectorBru);
-	ReadWritePTR->FromDataToIndicesVector("BruFileFace.txt", IndicesVectorBru);
-
-	std::vector<Vertex> VertexVectorBakke;
-	std::vector<int> IndicesVectorBakke;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBakke.obj", "BakkeByggFileVert.txt", "BakkeByggFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("BakkeByggFileVert.txt", VertexVectorBakke);
-	ReadWritePTR->FromDataToIndicesVector("BakkeByggFileFace.txt", IndicesVectorBakke);
-
+	//---------------------------------------------------------------------//
+	//----------------------- Open GL Config -----------------------//
+	//---------------------------------------------------------------------//
 	// Initialize GLFW
 	glfwInit();
 
@@ -87,52 +84,98 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-	/*
-	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
-	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
-	* folder and then give a relative path from this folder to whatever resource you want to get to.
-	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
-	*/
-	std::string currentDir = (fs::current_path()).string();
-	std::string texPath = "/Resources/";
-
-	// Texture data
-	Texture textures[]
-	{
-		Texture((currentDir + texPath + "planks.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		Texture((currentDir + texPath + "planksSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
-	};
-
-	// Original code from the tutorial
-	/*Texture textures[]
-	{
-		Texture("planks.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
-	};*/
-
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
-	// Store mesh data in vectors for the mesh
+	// Texture data
+	Texture texturesBridge[]
+	{
+		Texture((currentDir + TexturePath + "planks.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "planksSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+
+	};
+
+	Texture texturesCastle[]
+	{
+		Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+		//Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "specular", 3, GL_RED, GL_UNSIGNED_BYTE)
+	};
+
+	Texture texturesGround[]
+	{
+		Texture((currentDir + TexturePath + "Grass.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "Grass.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+	};
+
+	Texture texturesGold[]
+	{
+		Texture((currentDir + TexturePath + "Gold.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "Gold.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+	};
+
+	//---------------------------------------------------------------------//
+	//----------------------- Creating objects and mesh data -----------------------//
+	//---------------------------------------------------------------------//
+
+	// Creating small trophies to pick up
+    int ObjectAmount = 6;
+
+	std::vector<Mesh> MeshVector;
+    std::vector<std::vector<Vertex>> VertexVectorTrophy(ObjectAmount + 1);
+    std::vector<std::vector<int>> IndicesVectorTrophy(ObjectAmount + 1);
+
+    for (int i = 0; i <= ObjectAmount; i++)
+    {
+        std::string vertexFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Vertices.txt";
+        std::string indicesFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Indices.txt";
+        std::string textCoordsFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "TextCoords.txt";
+
+        ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgTrophy" + std::to_string(i) + ".obj", vertexFilePath, textCoordsFilePath, indicesFilePath);
+        ReadWritePTR->FromDataToVertexVector(vertexFilePath, textCoordsFilePath, VertexVectorTrophy[i]);
+        ReadWritePTR->FromDataToIndicesVector(indicesFilePath, IndicesVectorTrophy[i]);
+
+    	std::vector<Vertex> TrophyVertices(std::begin(VertexVectorTrophy[i]), std::end(VertexVectorTrophy[i]));
+		std::vector<GLuint> TrophyIndices(std::begin(IndicesVectorTrophy[i]), std::end(IndicesVectorTrophy[i]));
+		std::vector <Texture> TrophyTexture(texturesGold, texturesGold + sizeof(texturesGold) / sizeof(Texture));
+
+		MeshVector.emplace_back(TrophyVertices, TrophyIndices, TrophyTexture);
+    }
+
+	// Castle
+	std::vector<Vertex> VertexVectorSlott;
+	std::vector<int> IndicesVectorSlott;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgSlott.obj", "Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", "Datafiles/SlottFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", VertexVectorSlott);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/SlottFileIndices.txt", IndicesVectorSlott);
 	std::vector <Vertex> SlottVertices(std::begin(VertexVectorSlott), std::end(VertexVectorSlott));
 	std::vector <GLuint> SlottIndices(std::begin(IndicesVectorSlott), std::end(IndicesVectorSlott));
-	std::vector <Texture> SlottTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create hus mesh
-	Mesh Slott(SlottVertices, SlottIndices, SlottTexture);
+	std::vector <Texture> SlottTexture(texturesCastle, texturesCastle + sizeof(texturesCastle) / sizeof(Texture));
+	MeshVector.emplace_back(SlottVertices, SlottIndices, SlottTexture);
 
-	// Store mesh data in vectors for the mesh
+	// Bridge
+	std::vector<Vertex> VertexVectorBru;
+	std::vector<int> IndicesVectorBru;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBru.obj", "Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", "Datafiles/BruFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", VertexVectorBru);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/BruFileIndices.txt", IndicesVectorBru);
 	std::vector <Vertex> BruVertices(std::begin(VertexVectorBru), std::end(VertexVectorBru));
 	std::vector <GLuint> BruIndices(std::begin(IndicesVectorBru), std::end(IndicesVectorBru));
-	std::vector <Texture> BruTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create floor mesh
-	Mesh Bru(BruVertices, BruIndices, BruTexture);
+	std::vector <Texture> BruTexture(texturesBridge, texturesBridge + sizeof(texturesBridge) / sizeof(Texture));
+	MeshVector.emplace_back(BruVertices, BruIndices, BruTexture);
 
-	// Store mesh data in vectors for the mesh
+	// Ground
+	std::vector<Vertex> VertexVectorBakke;
+	std::vector<int> IndicesVectorBakke;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", "Datafiles/BakkeByggFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", VertexVectorBakke);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeByggFileIndices.txt", IndicesVectorBakke);
 	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
 	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
-	std::vector <Texture> BakkeTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create floor mesh
-	Mesh TestBygg(BakkeVertices, BakkeIndices, BakkeTexture);
+	std::vector <Texture> BakkeTexture(texturesGround, texturesGround + sizeof(texturesGround) / sizeof(Texture));
+	MeshVector.emplace_back(BakkeVertices, BakkeIndices, BakkeTexture);
+
+
 
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
@@ -165,7 +208,10 @@ int main()
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
-	// Main while loop
+
+	//---------------------------------------------------------------------//
+	//----------------------- Main While Loop -----------------------//
+	//---------------------------------------------------------------------//
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -179,10 +225,12 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		// Draws different meshes
-		Slott.Draw(shaderProgram, camera);
-		Bru.Draw(shaderProgram, camera);
-		TestBygg.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
+
+		for (Mesh Objects : MeshVector)
+		{
+			Objects.Draw(shaderProgram, camera);
+		}
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -199,112 +247,3 @@ int main()
 	glfwTerminate();
 	return 0;
 }
-
-//// Vertices coordinates
-//Vertex vertices[] =
-//{ //               COORDINATES							   /				  COLORS					 /					NORMALS					/	       TEXTURE COORDINATES    //
-//	////Vegg 1
-//	//Vertex{glm::vec3(0.0f, 2.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 0.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 0.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//
-//	////Vegg 2
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 0.0f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 0.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//
-//	////Vegg 3
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 0.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  6.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 0.0f,  6.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//
-//	////Vegg 4
-//	//Vertex{glm::vec3(0.0f, 2.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 0.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, -0.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//
-//	////Vegg 5
-//	//Vertex{glm::vec3(0.0f, 2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 0.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, -0.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//
-//	////Tak
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  8.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, 2.0f,  .0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(-5.0f, 2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	//Vertex{glm::vec3(0.0f, -2.0f,  3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)}
-//
-//
-//	//HovedBygg
-//	Vertex{glm::vec3(-3.0, 0.0,  0.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.625, 0.25)},
-//	Vertex{glm::vec3(-3.0, 2.0,  0.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.375, 0.50)},
-//	Vertex{glm::vec3(-3.0, 0.0, -1.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.375, 0.25)},
-//	Vertex{glm::vec3(-3.0, 2.0, -1.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.625, 0.50)},
-//	Vertex{glm::vec3(-1.0, 0.0,  0.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.375, 0.75)},
-//	Vertex{glm::vec3(-1.0, 2.0,  0.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.625, 0.75)},
-//	Vertex{glm::vec3(-1.0, 0.0, -1.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.375, 1.00)},
-//	Vertex{glm::vec3(-1.0, 2.0, -1.5), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.125, 0.75)}
-//
-//	//Vertex{glm::vec3(-5.0, 2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(0.0, 2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(0.0, 2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 0.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(0.0, 0.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 5.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(-5.0, 	0.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	0.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 6.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(-5.0, 	0.0, 6.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 0.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//	//Vertex{glm::vec3(-5.0, -0.0, 8.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(0.0, 2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//
-//	//Vertex{glm::vec3(0.0, 0.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0, 	2.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	//Vertex{glm::vec3(-5.0,   -0.0, 3.0), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//
-//
-//	/*Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	Vertex{glm::vec3( 1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-//	Vertex{glm::vec3( 1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
-//	Vertex{glm::vec3(-2.0f, -1.0f,  2.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-//	Vertex{glm::vec3(-2.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-//	Vertex{glm::vec3( 2.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-//	Vertex{glm::vec3( 2.0f, -1.0f,  2.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}*/
-//};
-
-//// Indices for vertices order
-//GLuint indices[] =
-//{
-//3, 6, 2,
-//7, 4, 6,
-//5, 0, 4,
-//6, 0, 2,
-//3, 5, 7,
-//3, 7, 6,
-//7, 5, 4,
-//5, 1, 0,
-//6, 4, 0,
-//3, 1, 5
-//
-//};
