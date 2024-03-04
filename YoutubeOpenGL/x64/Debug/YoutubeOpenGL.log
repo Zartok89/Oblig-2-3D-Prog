@@ -1,9 +1,2 @@
-﻿  FileReadWrite.cpp
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(116,29): warning C4244: 'argument': conversion from 'int' to '_Ty', possible loss of data
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(116,29): warning C4244:         with
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(116,29): warning C4244:         [
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(116,29): warning C4244:             _Ty=float
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(116,29): warning C4244:         ]
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(112,10): warning C4101: 'slash': unreferenced local variable
-C:\VisualStudioProjects\Oblig-2-3D-Prog\FileReadWrite.cpp(110,11): warning C4101: 'Vertices': unreferenced local variable
+﻿  Main.cpp
   YoutubeOpenGL.vcxproj -> C:\VisualStudioProjects\Oblig-2-3D-Prog\x64\Debug\YoutubeOpenGL.exe

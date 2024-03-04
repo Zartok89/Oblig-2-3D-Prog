@@ -87,13 +87,32 @@ int main()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
-			// Texture data
-	Texture textures[]
+	// Texture data
+	Texture texturesBridge[]
 	{
 		Texture((currentDir + TexturePath + "planks.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
 		Texture((currentDir + TexturePath + "planksSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+
 	};
 
+	Texture texturesCastle[]
+	{
+		Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+		//Texture((currentDir + TexturePath + "StoneWallSpec.png").c_str(), "specular", 3, GL_RED, GL_UNSIGNED_BYTE)
+	};
+
+	Texture texturesGround[]
+	{
+		Texture((currentDir + TexturePath + "Grass.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "Grass.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+	};
+
+	Texture texturesGold[]
+	{
+		Texture((currentDir + TexturePath + "Gold.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "Gold.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE),
+	};
 
 	//---------------------------------------------------------------------//
 	//----------------------- Creating objects and mesh data -----------------------//
@@ -118,7 +137,7 @@ int main()
 
     	std::vector<Vertex> TrophyVertices(std::begin(VertexVectorTrophy[i]), std::end(VertexVectorTrophy[i]));
 		std::vector<GLuint> TrophyIndices(std::begin(IndicesVectorTrophy[i]), std::end(IndicesVectorTrophy[i]));
-		std::vector <Texture> TrophyTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+		std::vector <Texture> TrophyTexture(texturesGold, texturesGold + sizeof(texturesGold) / sizeof(Texture));
 
 		MeshVector.emplace_back(TrophyVertices, TrophyIndices, TrophyTexture);
     }
@@ -131,7 +150,7 @@ int main()
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/SlottFileIndices.txt", IndicesVectorSlott);
 	std::vector <Vertex> SlottVertices(std::begin(VertexVectorSlott), std::end(VertexVectorSlott));
 	std::vector <GLuint> SlottIndices(std::begin(IndicesVectorSlott), std::end(IndicesVectorSlott));
-	std::vector <Texture> SlottTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Texture> SlottTexture(texturesCastle, texturesCastle + sizeof(texturesCastle) / sizeof(Texture));
 	MeshVector.emplace_back(SlottVertices, SlottIndices, SlottTexture);
 
 	// Bridge
@@ -142,7 +161,7 @@ int main()
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/BruFileIndices.txt", IndicesVectorBru);
 	std::vector <Vertex> BruVertices(std::begin(VertexVectorBru), std::end(VertexVectorBru));
 	std::vector <GLuint> BruIndices(std::begin(IndicesVectorBru), std::end(IndicesVectorBru));
-	std::vector <Texture> BruTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Texture> BruTexture(texturesBridge, texturesBridge + sizeof(texturesBridge) / sizeof(Texture));
 	MeshVector.emplace_back(BruVertices, BruIndices, BruTexture);
 
 	// Ground
@@ -153,7 +172,7 @@ int main()
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeByggFileIndices.txt", IndicesVectorBakke);
 	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
 	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
-	std::vector <Texture> BakkeTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+	std::vector <Texture> BakkeTexture(texturesGround, texturesGround + sizeof(texturesGround) / sizeof(Texture));
 	MeshVector.emplace_back(BakkeVertices, BakkeIndices, BakkeTexture);
 
 
