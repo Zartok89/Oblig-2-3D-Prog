@@ -10,11 +10,11 @@ struct Face {
 	std::vector<int> indices;
 };
 
-void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::string NewDataFileVertices, std::string NewDataFileFaces)
+void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::string NewDataFileVertices, std::string NewDataFileIndices)
 {
 	std::fstream MyFileRead;
 	std::fstream MyFileVerts;
-	std::fstream MyFileFaces;
+	std::fstream MyFileIndices;
 	MyFileRead.open(FileToRead, std::ios::in);
 	MyFileVerts.open(NewDataFileVertices, std::ios::out);
 	if (MyFileRead.is_open() && MyFileVerts.is_open())
@@ -54,7 +54,7 @@ void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::s
 		MyFileRead.close();
 		MyFileVerts.close();
 
-		MyFileFaces.open(NewDataFileFaces, std::ios::out);
+		MyFileIndices.open(NewDataFileIndices, std::ios::out);
 		MyFileRead.open(FileToRead, std::ios::in);
 		std::string Line2;
 		// Skip the first line
@@ -93,13 +93,13 @@ void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::s
 				// Write the code to floats to the output file
 				for (float Number : floats)
 				{
-					MyFileFaces << Number << " ";
+					MyFileIndices << Number << " ";
 				}
-				MyFileFaces << std::endl;
+				MyFileIndices << std::endl;
 			}
 		}
 		MyFileRead.close();
-		MyFileFaces.close();
+		MyFileIndices.close();
 	}
 	else
 	{

@@ -38,25 +38,17 @@ GLuint lightIndices[] =
 
 int main()
 {
+
+	//----------------------- Filesystem to find folder -----------------------//
+	std::string currentDir = (fs::current_path()).string();
+	std::string TexturePath = "/Resources/Textures/";
+	std::string ObjectPath = "/Resources/Objects/";
+
+	//----------------------- Pointers -----------------------//
 	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
-	std::vector<Vertex> VertexVectorSlott;
-	std::vector<int> IndicesVectorSlott;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgSlott.obj", "SlottFileVert.txt", "SlottFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("SlottFileVert.txt", VertexVectorSlott);
-	ReadWritePTR->FromDataToIndicesVector("SlottFileFace.txt", IndicesVectorSlott);
 
-	std::vector<Vertex> VertexVectorBru;
-	std::vector<int> IndicesVectorBru;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBru.obj", "BruFileVert.txt", "BruFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("BruFileVert.txt", VertexVectorBru);
-	ReadWritePTR->FromDataToIndicesVector("BruFileFace.txt", IndicesVectorBru);
-
-	std::vector<Vertex> VertexVectorBakke;
-	std::vector<int> IndicesVectorBakke;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgBakke.obj", "BakkeByggFileVert.txt", "BakkeByggFileFace.txt");
-	ReadWritePTR->FromDataToVertexVector("BakkeByggFileVert.txt", VertexVectorBakke);
-	ReadWritePTR->FromDataToIndicesVector("BakkeByggFileFace.txt", IndicesVectorBakke);
+	//----------------------- Open GL Config -----------------------//
 
 	// Initialize GLFW
 	glfwInit();
@@ -87,52 +79,76 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-	/*
-	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
-	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
-	* folder and then give a relative path from this folder to whatever resource you want to get to.
-	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
-	*/
-	std::string currentDir = (fs::current_path()).string();
-	std::string texPath = "/Resources/";
-
-	// Texture data
-	Texture textures[]
-	{
-		Texture((currentDir + texPath + "planks.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		Texture((currentDir + texPath + "planksSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
-	};
-
-	// Original code from the tutorial
-	/*Texture textures[]
-	{
-		Texture("planks.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
-	};*/
-
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
-	// Store mesh data in vectors for the mesh
+			// Texture data
+	Texture textures[]
+	{
+		Texture((currentDir + TexturePath + "planks.png").c_str(), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		Texture((currentDir + TexturePath + "planksSpec.png").c_str(), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+	};
+
+
+	//----------------------- Creating objects and mesh data -----------------------//
+
+	// Creating small trophies to pick up
+    int ObjectAmount = 6;
+
+	std::vector<Mesh> MeshVector;
+    std::vector<std::vector<Vertex>> VertexVectorTrophy(ObjectAmount + 1);
+    std::vector<std::vector<int>> IndicesVectorTrophy(ObjectAmount + 1);
+
+    for (int i = 0; i <= ObjectAmount; i++)
+    {
+        std::string vertexFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Vertices.txt";
+        std::string indicesFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Indices.txt";
+
+        ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgTrophy" + std::to_string(i) + ".obj", vertexFilePath, indicesFilePath);
+        ReadWritePTR->FromDataToVertexVector(vertexFilePath, VertexVectorTrophy[i]);
+        ReadWritePTR->FromDataToIndicesVector(indicesFilePath, IndicesVectorTrophy[i]);
+
+    	std::vector<Vertex> TrophyVertices(std::begin(VertexVectorTrophy[i]), std::end(VertexVectorTrophy[i]));
+		std::vector<GLuint> TrophyIndices(std::begin(IndicesVectorTrophy[i]), std::end(IndicesVectorTrophy[i]));
+		std::vector <Texture> TrophyTexture(textures, textures + sizeof(textures) / sizeof(Texture));
+
+		MeshVector.emplace_back(TrophyVertices, TrophyIndices, TrophyTexture);
+    }
+
+	// Castle
+	std::vector<Vertex> VertexVectorSlott;
+	std::vector<int> IndicesVectorSlott;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgSlott.obj", "Datafiles/SlottFileVert.txt", "Datafiles/SlottFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/SlottFileVert.txt", VertexVectorSlott);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/SlottFileIndices.txt", IndicesVectorSlott);
 	std::vector <Vertex> SlottVertices(std::begin(VertexVectorSlott), std::end(VertexVectorSlott));
 	std::vector <GLuint> SlottIndices(std::begin(IndicesVectorSlott), std::end(IndicesVectorSlott));
 	std::vector <Texture> SlottTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create hus mesh
-	Mesh Slott(SlottVertices, SlottIndices, SlottTexture);
+	MeshVector.emplace_back(SlottVertices, SlottIndices, SlottTexture);
 
-	// Store mesh data in vectors for the mesh
+	// Bridge
+	std::vector<Vertex> VertexVectorBru;
+	std::vector<int> IndicesVectorBru;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBru.obj", "Datafiles/BruFileVert.txt", "Datafiles/BruFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BruFileVert.txt", VertexVectorBru);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/BruFileIndices.txt", IndicesVectorBru);
 	std::vector <Vertex> BruVertices(std::begin(VertexVectorBru), std::end(VertexVectorBru));
 	std::vector <GLuint> BruIndices(std::begin(IndicesVectorBru), std::end(IndicesVectorBru));
 	std::vector <Texture> BruTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create floor mesh
-	Mesh Bru(BruVertices, BruIndices, BruTexture);
+	MeshVector.emplace_back(BruVertices, BruIndices, BruTexture);
 
-	// Store mesh data in vectors for the mesh
+	// Ground
+	std::vector<Vertex> VertexVectorBakke;
+	std::vector<int> IndicesVectorBakke;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeByggFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeByggFileVert.txt", VertexVectorBakke);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeByggFileIndices.txt", IndicesVectorBakke);
 	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
 	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
 	std::vector <Texture> BakkeTexture(textures, textures + sizeof(textures) / sizeof(Texture));
-	// Create floor mesh
-	Mesh TestBygg(BakkeVertices, BakkeIndices, BakkeTexture);
+	MeshVector.emplace_back(BakkeVertices, BakkeIndices, BakkeTexture);
+
+
 
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
@@ -179,10 +195,12 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 		// Draws different meshes
-		Slott.Draw(shaderProgram, camera);
-		Bru.Draw(shaderProgram, camera);
-		TestBygg.Draw(shaderProgram, camera);
 		light.Draw(lightShader, camera);
+
+		for (Mesh Objects : MeshVector)
+		{
+			Objects.Draw(shaderProgram, camera);
+		}
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
