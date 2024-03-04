@@ -110,9 +110,10 @@ int main()
     {
         std::string vertexFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Vertices.txt";
         std::string indicesFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "Indices.txt";
+        std::string textCoordsFilePath = "Datafiles/3DProgTrophy" + std::to_string(i) + "TextCoords.txt";
 
-        ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgTrophy" + std::to_string(i) + ".obj", vertexFilePath, indicesFilePath);
-        ReadWritePTR->FromDataToVertexVector(vertexFilePath, VertexVectorTrophy[i]);
+        ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgTrophy" + std::to_string(i) + ".obj", vertexFilePath, textCoordsFilePath, indicesFilePath);
+        ReadWritePTR->FromDataToVertexVector(vertexFilePath, textCoordsFilePath, VertexVectorTrophy[i]);
         ReadWritePTR->FromDataToIndicesVector(indicesFilePath, IndicesVectorTrophy[i]);
 
     	std::vector<Vertex> TrophyVertices(std::begin(VertexVectorTrophy[i]), std::end(VertexVectorTrophy[i]));
@@ -125,8 +126,8 @@ int main()
 	// Castle
 	std::vector<Vertex> VertexVectorSlott;
 	std::vector<int> IndicesVectorSlott;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgSlott.obj", "Datafiles/SlottFileVert.txt", "Datafiles/SlottFileIndices.txt");
-	ReadWritePTR->FromDataToVertexVector("Datafiles/SlottFileVert.txt", VertexVectorSlott);
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgSlott.obj", "Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", "Datafiles/SlottFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", VertexVectorSlott);
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/SlottFileIndices.txt", IndicesVectorSlott);
 	std::vector <Vertex> SlottVertices(std::begin(VertexVectorSlott), std::end(VertexVectorSlott));
 	std::vector <GLuint> SlottIndices(std::begin(IndicesVectorSlott), std::end(IndicesVectorSlott));
@@ -136,8 +137,8 @@ int main()
 	// Bridge
 	std::vector<Vertex> VertexVectorBru;
 	std::vector<int> IndicesVectorBru;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBru.obj", "Datafiles/BruFileVert.txt", "Datafiles/BruFileIndices.txt");
-	ReadWritePTR->FromDataToVertexVector("Datafiles/BruFileVert.txt", VertexVectorBru);
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBru.obj", "Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", "Datafiles/BruFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", VertexVectorBru);
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/BruFileIndices.txt", IndicesVectorBru);
 	std::vector <Vertex> BruVertices(std::begin(VertexVectorBru), std::end(VertexVectorBru));
 	std::vector <GLuint> BruIndices(std::begin(IndicesVectorBru), std::end(IndicesVectorBru));
@@ -147,8 +148,8 @@ int main()
 	// Ground
 	std::vector<Vertex> VertexVectorBakke;
 	std::vector<int> IndicesVectorBakke;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeByggFileIndices.txt");
-	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeByggFileVert.txt", VertexVectorBakke);
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", "Datafiles/BakkeByggFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", VertexVectorBakke);
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeByggFileIndices.txt", IndicesVectorBakke);
 	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
 	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
