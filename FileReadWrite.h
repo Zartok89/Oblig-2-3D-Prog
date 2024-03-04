@@ -8,7 +8,7 @@ class ReadWriteFiles
 {
 public:
 
-	ReadWriteFiles();
+	ReadWriteFiles() = default;
 	void WriteToFile(std::string Filepath, std::vector<Vertex>& VertexVector);
 	void AppendToFile(std::string Filepath);
 	void ReadFromFile(std::string FileToRead);

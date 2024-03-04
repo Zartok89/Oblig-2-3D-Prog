@@ -191,6 +191,8 @@ int main()
 {
 	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
+	ReadWritePTR->ReadFromFileWriteIntoNewFile("3DProgVegg.obj", "TestFile.txt");
+
 	// Initialize GLFW
 	glfwInit();
 
