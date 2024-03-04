@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+*.ipch
+.vs/YoutubeOpenGL/v17/Solution.VC.db
+.vs/YoutubeOpenGL/v17/DocumentLayout.json
+.vs/YoutubeOpenGL/v17/Browse.VC.opendb
+.vs/YoutubeOpenGL/v17/Browse.VC.db-wal
+.vs/YoutubeOpenGL/v17/Browse.VC.db-shm
+.vs/YoutubeOpenGL/v17/Browse.VC.db
+.vs/YoutubeOpenGL/v17/.suo
+.vs/YoutubeOpenGL/FileContentIndex/f79732b4-2d59-43da-abd4-e4a38af95504.vsidx
+.vs/YoutubeOpenGL/FileContentIndex/a14b20d6-a3d1-471d-9e5b-fe3fb092d47a.vsidx
+.vs/YoutubeOpenGL/FileContentIndex/8557f11b-1644-43b8-a58c-7f345bcc1986.vsidx
+.vs/YoutubeOpenGL/FileContentIndex/6087459a-ccb8-401c-90f8-753cc80cf873.vsidx
+.vs/YoutubeOpenGL/FileContentIndex/04a7c56f-34bd-49f9-af79-792a438fc094.vsidx
