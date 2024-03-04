@@ -1,4 +1,5 @@
 #include<filesystem>
+#include <memory>
 namespace fs = std::filesystem;
 
 #include"Mesh.h"
@@ -188,7 +189,7 @@ GLuint lightIndices[] =
 
 int main()
 {
-	std::shared_ptr<FileReadWrite>
+	std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
 
 	// Initialize GLFW
 	glfwInit();
