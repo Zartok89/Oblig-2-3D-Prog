@@ -56,69 +56,69 @@ void ReadWriteFiles::ReadFromFileWriteIntoNewFile(std::string FileToRead, std::s
 	}
 }
 
-void ReadWriteFiles::FromDataToVertexVector(std::string DataFileToVertexVector, std::vector<Vertex>& VerticesVector)
-{
-	std::fstream MyFile;
-	MyFile.open(DataFileToVertexVector, std::ios::in); // Read mode
-	if (MyFile.is_open())
-	{
-		std::cout << DataFileToVertexVector << " File has been opened correctly\n";
-		std::string Line;
-		while (std::getline(MyFile, Line))
-		{
-			std::istringstream iss(Line);
-			std::vector<float> floats;
-			float Number;
-			while (iss >> Number)
-			{
-				floats.push_back(Number);
-			}
-			float TempX = floats[0];
-			float TempY = floats[1];
-			float TempZ = floats[2];
-			float TempR = floats[3];
-			float TempG = floats[4];
-			float TempB = floats[5];
-			float TempU = floats[6];
-			float TempV = floats[7];
-			VerticesVector.emplace_back(Vertex{ TempX, TempY, TempZ, TempR, TempG, TempB, TempU, TempV });
-		}
-
-		//std::cout << "Amount of Vertexes added to the vector: " << VerticesVector.size() << std::endl;
-		MyFile.close();
-	}
-	else
-	{
-		std::cerr << "Error opening files." << std::endl;
-	}
-}
-
-void ReadWriteFiles::SubdivideData(std::vector<Vertex>& VerticesVector, std::vector<Vertex>& NewSubdividedDataVector)
-{
-	float opplosning = 9;
-	NewSubdividedDataVector.emplace_back(VerticesVector[0].x, VerticesVector[0].y, 0, 0, 0, 0, 0, 0);
-
-	for (float i = 0; i < VerticesVector.size() - 1; i++)
-	{
-		float TempN = (VerticesVector[i + 1].x - VerticesVector[i].x);
-		float TempNY = (VerticesVector[i + 1].y - VerticesVector[i].y);
-		float TempX = VerticesVector[i].x;
-		float TempY = VerticesVector[i].y;
-		float hX = TempN / opplosning;
-		float hY = TempNY / opplosning;
-		for (float j = hX; j <= TempN; j += hX)
-		{
-			float newX = TempX + j;
-			float newY = TempY += hY;
-			NewSubdividedDataVector.emplace_back(newX, newY, 1, 1, 1, 0, 0, 0);
-		}
-	}
-	for (Vertex tempvert : NewSubdividedDataVector)
-	{
-		std::cout << "x: " << tempvert.x << ", ";
-		std::cout << "y: " << tempvert.y << "\n";
-	}
-}
+//void ReadWriteFiles::FromDataToVertexVector(std::string DataFileToVertexVector, std::vector<Vertex>& VerticesVector)
+//{
+//	std::fstream MyFile;
+//	MyFile.open(DataFileToVertexVector, std::ios::in); // Read mode
+//	if (MyFile.is_open())
+//	{
+//		std::cout << DataFileToVertexVector << " File has been opened correctly\n";
+//		std::string Line;
+//		while (std::getline(MyFile, Line))
+//		{
+//			std::istringstream iss(Line);
+//			std::vector<float> floats;
+//			float Number;
+//			while (iss >> Number)
+//			{
+//				floats.push_back(Number);
+//			}
+//			float TempX = floats[0];
+//			float TempY = floats[1];
+//			float TempZ = floats[2];
+//			float TempR = floats[3];
+//			float TempG = floats[4];
+//			float TempB = floats[5];
+//			float TempU = floats[6];
+//			float TempV = floats[7];
+//			VerticesVector.emplace_back(Vertex{ TempX, TempY, TempZ, TempR});
+//		}
+//
+//		//std::cout << "Amount of Vertexes added to the vector: " << VerticesVector.size() << std::endl;
+//		MyFile.close();
+//	}
+//	else
+//	{
+//		std::cerr << "Error opening files." << std::endl;
+//	}
+//}
+//
+//void ReadWriteFiles::SubdivideData(std::vector<Vertex>& VerticesVector, std::vector<Vertex>& NewSubdividedDataVector)
+//{
+//	float opplosning = 9;
+//	NewSubdividedDataVector.emplace_back(VerticesVector[0].x, VerticesVector[0].y, 0, 0, 0, 0, 0, 0);
+//
+//	for (float i = 0; i < VerticesVector.size() - 1; i++)
+//	{
+//		float TempN = (VerticesVector[i + 1].x - VerticesVector[i].x);
+//		float TempNY = (VerticesVector[i + 1].y - VerticesVector[i].y);
+//		float TempX = VerticesVector[i].x;
+//		float TempY = VerticesVector[i].y;
+//		float hX = TempN / opplosning;
+//		float hY = TempNY / opplosning;
+//		for (float j = hX; j <= TempN; j += hX)
+//		{
+//			float newX = TempX + j;
+//			float newY = TempY += hY;
+//			NewSubdividedDataVector.emplace_back(newX, newY, 1, 1, 1, 0, 0, 0);
+//		}
+//	}
+//	for (Vertex tempvert : NewSubdividedDataVector)
+//	{
+//		std::cout << "x: " << tempvert.x << ", ";
+//		std::cout << "y: " << tempvert.y << "\n";
+//	}
+//}
 
 void ReadWriteFiles::RemovingUnwantedChars(std::string& Line)
 {

@@ -2,13 +2,7 @@
 #include <string>
 #include <vector>
 
-class Vertex
-{
-public:
-	Vertex();
-	Vertex(float x, float y, float z, float r, float b, float g, float u, float v);
-	float x, y, z, r, b, g, u, v;
-};
+#include "VBO.h"
 
 class ReadWriteFiles
 {
