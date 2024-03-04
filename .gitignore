@@ -44,3 +44,7 @@
 .vs/YoutubeOpenGL/FileContentIndex/6087459a-ccb8-401c-90f8-753cc80cf873.vsidx
 .vs/YoutubeOpenGL/FileContentIndex/04a7c56f-34bd-49f9-af79-792a438fc094.vsidx
 *.vsidx
+
+x64/Debug/
+
+.vs/YoutubeOpenGL/v17/fileList.bin
