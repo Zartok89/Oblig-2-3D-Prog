@@ -213,6 +213,8 @@ int main()
 	///Collision Control
 	BoundingBox BB;
 
+	std::vector<float> OrigoPointsVector = ReadWritePTR->OrigoVector;
+
 
 
 

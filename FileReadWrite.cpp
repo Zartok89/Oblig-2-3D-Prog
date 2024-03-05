@@ -155,6 +155,7 @@ void ReadWriteFiles::FromDataToVertexVector(std::string VertexDataFile, std::str
 		std::cout << FileTextCoordsDataFile << " File has been opened correctly\n";
 		std::string LineVert;
 		std::vector<glm::vec3> VertVec;
+		std::vector<float> GetOrigiPointsVector;
 		while (std::getline(MyFileVertices, LineVert))
 		{
 			std::istringstream iss(LineVert);
@@ -167,8 +168,20 @@ void ReadWriteFiles::FromDataToVertexVector(std::string VertexDataFile, std::str
 			float TempX = floats[0];
 			float TempY = floats[1];
 			float TempZ = floats[2];
+			GetOrigiPointsVector.emplace_back(TempX);
+			GetOrigiPointsVector.emplace_back(TempY);
+			GetOrigiPointsVector.emplace_back(TempZ);
 			VertVec.emplace_back(TempX, TempY, TempZ);
+
 		}
+
+		for (auto TempVert : GetOrigiPointsVector)
+		{
+			TotalVertPoints += TempVert;
+		}
+
+		ObjectOrigo = TotalVertPoints / GetOrigiPointsVector.size();
+		OrigoVector.emplace_back(ObjectOrigo);
 
 		std::string LineCoords;
 		std::vector<glm::vec2> TextCordsVec;
