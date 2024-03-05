@@ -4,6 +4,7 @@ namespace fs = std::filesystem;
 
 #include"Mesh.h"
 #include "FileReadWrite.h"
+#include "Collision.h"
 
 const unsigned int width = 1200;
 const unsigned int height = 1200;
@@ -207,6 +208,11 @@ int main()
 
 	// Creates camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+
+	///Collision Control
+	Collision col;
+
+
 
 
 	//---------------------------------------------------------------------//
