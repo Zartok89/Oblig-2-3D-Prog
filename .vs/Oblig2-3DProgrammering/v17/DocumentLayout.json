@@ -1,12 +1,122 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:FileReadWrite.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:Mesh.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:FileReadWrite.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\VBO.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:VBO.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D94349FD-5460-401F-9D7A-1CEDAAC766A5}|Oblig2-3DProgrammering.vcxproj|solutionrelative:Mesh.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "VBO.h",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\VBO.h",
+              "RelativeDocumentMoniker": "VBO.h",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\VBO.h",
+              "RelativeToolTip": "VBO.h",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAwAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-03-05T14:04:26.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FileReadWrite.h",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.h",
+              "RelativeDocumentMoniker": "FileReadWrite.h",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.h",
+              "RelativeToolTip": "FileReadWrite.h",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABUAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-03-05T13:46:31.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FileReadWrite.cpp",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.cpp",
+              "RelativeDocumentMoniker": "FileReadWrite.cpp",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\FileReadWrite.cpp",
+              "RelativeToolTip": "FileReadWrite.cpp",
+              "ViewState": "AQIAAKwAAAAAAAAAAAArwLcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-05T13:46:30.437Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Main.cpp",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Main.cpp",
+              "RelativeDocumentMoniker": "Main.cpp",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Main.cpp",
+              "RelativeToolTip": "Main.cpp",
+              "ViewState": "AQIAAM4AAAAAAAAAAAArwNYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-05T10:22:09.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Mesh.h",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.h",
+              "RelativeDocumentMoniker": "Mesh.h",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.h",
+              "RelativeToolTip": "Mesh.h",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAA8AAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-03-05T10:11:46.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Mesh.cpp",
+              "DocumentMoniker": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.cpp",
+              "RelativeDocumentMoniker": "Mesh.cpp",
+              "ToolTip": "C:\\VisualStudioProjects\\Oblig-2-3D-Prog\\Mesh.cpp",
+              "RelativeToolTip": "Mesh.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-05T10:12:19.177Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

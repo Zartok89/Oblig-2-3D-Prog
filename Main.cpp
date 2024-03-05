@@ -212,6 +212,8 @@ int main()
 	///Collision Control
 	Collision col;
 
+	std::vector<float> OrigoPointsVector = ReadWritePTR->OrigoVector;
+
 
 
 

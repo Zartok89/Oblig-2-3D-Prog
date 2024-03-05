@@ -18,4 +18,9 @@ public:
 	void FromDataToIndicesVector(std::string IndicesDataFile, std::vector<int>& IndicesVector);
 	void SubdivideData(std::vector<Vertex>& VerticesVector, std::vector<Vertex>& NewSubdividedDataFile);
 	void RemovingUnwantedChars(std::string& Line);
+
+	std::vector<float> OrigoVector;
+
+	float ObjectOrigo = 0;
+	float TotalVertPoints = 0;
 };
