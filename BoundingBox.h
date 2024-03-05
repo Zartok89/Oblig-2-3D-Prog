@@ -1,10 +1,11 @@
 #pragma once
 #include "Libraries/include/glm/glm.hpp"
 #include <cmath>
+#include "FileReadWrite.h" 
+#include "Mesh.h" 
 
 struct BoundingBox;
-
-
+ 
 class IBounded
 {
 	virtual BoundingBox& GetBoundingBox() = 0;
@@ -13,9 +14,7 @@ class IBounded
 
 struct BoundingBox
 {
-	glm::vec3 center{ 0.f };
-	glm::vec3 radius{ 1.f };
-
-	bool Intersect(const BoundingBox& b); 
+    std::shared_ptr<ReadWriteFiles> ReadWritePTR = std::make_shared<ReadWriteFiles>();
+	bool Intersect(std::vector<float> OrigoPoints);  
 };
 
