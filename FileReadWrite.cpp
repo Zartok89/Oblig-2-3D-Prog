@@ -220,7 +220,7 @@ void ReadWriteFiles::FromDataToVertexVector(std::string VertexDataFile, std::str
 	}
 }
 
-void ReadWriteFiles::FromDataToIndicesVector(std::string IndicesDataFile, std::vector<int>& IndicesVector)
+void ReadWriteFiles::FromDataToIndicesVector(std::string IndicesDataFile, std::vector<GLuint>& IndicesVector)
 {
 	std::fstream MyFileIndices;
 	MyFileIndices.open(IndicesDataFile, std::ios::in); // Read mode

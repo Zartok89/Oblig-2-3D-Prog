@@ -124,7 +124,7 @@ int main()
 
 	std::vector<Mesh> MeshVector;
     std::vector<std::vector<Vertex>> VertexVectorTrophy(ObjectAmount + 1);
-    std::vector<std::vector<int>> IndicesVectorTrophy(ObjectAmount + 1);
+    std::vector<std::vector<GLuint>> IndicesVectorTrophy(ObjectAmount + 1);
 
     for (int i = 0; i <= ObjectAmount; i++)
     {
@@ -145,7 +145,7 @@ int main()
 
 	// Castle
 	std::vector<Vertex> VertexVectorSlott;
-	std::vector<int> IndicesVectorSlott;
+	std::vector<GLuint> IndicesVectorSlott;
 	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgSlott.obj", "Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", "Datafiles/SlottFileIndices.txt");
 	ReadWritePTR->FromDataToVertexVector("Datafiles/SlottFileVert.txt", "Datafiles/SlottFileTextCoords.txt", VertexVectorSlott);
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/SlottFileIndices.txt", IndicesVectorSlott);
@@ -156,7 +156,7 @@ int main()
 
 	// Bridge
 	std::vector<Vertex> VertexVectorBru;
-	std::vector<int> IndicesVectorBru;
+	std::vector<GLuint> IndicesVectorBru;
 	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBru.obj", "Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", "Datafiles/BruFileIndices.txt");
 	ReadWritePTR->FromDataToVertexVector("Datafiles/BruFileVert.txt", "Datafiles/BruFileTextCoords.txt", VertexVectorBru);
 	ReadWritePTR->FromDataToIndicesVector("Datafiles/BruFileIndices.txt", IndicesVectorBru);
@@ -167,15 +167,25 @@ int main()
 
 	// Ground
 	std::vector<Vertex> VertexVectorBakke;
-	std::vector<int> IndicesVectorBakke;
-	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", "Datafiles/BakkeByggFileIndices.txt");
-	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeByggFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", VertexVectorBakke);
-	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeByggFileIndices.txt", IndicesVectorBakke);
+	std::vector<GLuint> IndicesVectorBakke;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgBakke.obj", "Datafiles/BakkeFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", "Datafiles/BakkeFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/BakkeFileVert.txt", "Datafiles/BakkeFileTextCoords.txt", VertexVectorBakke);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/BakkeFileIndices.txt", IndicesVectorBakke);
 	std::vector <Vertex> BakkeVertices(std::begin(VertexVectorBakke), std::end(VertexVectorBakke));
 	std::vector <GLuint> BakkeIndices(std::begin(IndicesVectorBakke), std::end(IndicesVectorBakke));
 	std::vector <Texture> BakkeTexture(texturesGround, texturesGround + sizeof(texturesGround) / sizeof(Texture));
 	MeshVector.emplace_back(BakkeVertices, BakkeIndices, BakkeTexture);
-
+	
+	// Player
+	std::vector<Vertex> VertexVectorPlayer;
+	std::vector<GLuint> IndicesVectorPlayer;
+	ReadWritePTR->ReadFromFileWriteIntoNewFile(currentDir + ObjectPath + "3DProgPlayer.obj", "Datafiles/PlayerFileVert.txt", "Datafiles/PlayerFileTextCoords.txt", "Datafiles/PlayerFileIndices.txt");
+	ReadWritePTR->FromDataToVertexVector("Datafiles/PlayerFileVert.txt", "Datafiles/PlayerFileTextCoords.txt", VertexVectorPlayer);
+	ReadWritePTR->FromDataToIndicesVector("Datafiles/PlayerFileIndices.txt", IndicesVectorPlayer);
+	std::vector <Vertex> PlayerVertices(std::begin(VertexVectorPlayer), std::end(VertexVectorPlayer));
+	std::vector <GLuint> PlayerIndices(std::begin(IndicesVectorPlayer), std::end(IndicesVectorPlayer));
+	std::vector <Texture> PlayerTexture(texturesGround, texturesGround + sizeof(texturesGround) / sizeof(Texture));
+	Mesh PlayerMesh(VertexVectorPlayer, IndicesVectorPlayer, PlayerTexture);
 
 
 	// Shader for light cube
@@ -207,7 +217,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	// Creates camera object
-	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+	Camera camera(width, height, glm::vec3(-50.0f, 8.0f, 10.0f));
 
 	///Collision Control
 	Collision col;
@@ -239,6 +249,8 @@ int main()
 		{
 			Objects.Draw(shaderProgram, camera);
 		}
+
+		PlayerMesh.Draw(shaderProgram, camera);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
