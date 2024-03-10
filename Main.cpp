@@ -2,10 +2,10 @@
 #include <memory>
 namespace fs = std::filesystem;
 
-#include"Mesh.h"
+#include "Mesh.h"
 #include "FileReadWrite.h"
-#include "Collision.h"
 #include "BoundingBox.h"
+#include <utility>
 
 const unsigned int width = 1200;
 const unsigned int height = 1200;
@@ -177,8 +177,6 @@ int main()
 	std::vector <Texture> BakkeTexture(texturesGround, texturesGround + sizeof(texturesGround) / sizeof(Texture));
 	MeshVector.emplace_back(BakkeVertices, BakkeIndices, BakkeTexture);
 
-
-
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
 	// Store mesh data in vectors for the mesh
@@ -211,12 +209,44 @@ int main()
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	///Collision Control
-	BoundingBox BB;
+	BoundingBox A;
+	BoundingBox B; 
 
-	std::vector<float> OrigoPointsVector = ReadWritePTR->OrigoVector;
+	std::vector<glm::vec3> OrigoPointsVector = ReadWritePTR->getOrigoVector;
+	std::vector<glm::vec3> trans;
+
+	trans.emplace_back(glm::vec3(1.0f, 1.0f, 1.0f)); 
+
+	std::vector<std::vector<Vertex>> getMesh;
+	getMesh.emplace_back(BakkeVertices);
+	getMesh.emplace_back(lightVerts);
+
+
+	glm::vec3 BBSize{ 5.0f,5.0f,5.0f };
+
+	for (auto i = 0; i < getMesh.size(); i++)
+	{
+		for (auto j = i + 1; j < getMesh.size(); j++)
+		{
+			auto a = BoundingBox(getMesh[i], OrigoPointsVector[i], BBSize); 
+			auto b = BoundingBox(getMesh[j], OrigoPointsVector[j], BBSize);   
+
+			glm::vec3 mtv{};
+			if (a.IntersectAABB(b, &mtv))
+			{
+				/*a.getVertex[i].position - mtv * 0.5f;
+				b.getVertex[j].position + mtv * 0.5f;*/
+			}
+		}
+	}
 
 
 
+
+	//BB.IntersectObject(std::pair(VertexVectorBru, VertexVectorBakke), trans); 
+
+	//BB.IntersectPlayer(OrigoPointsVector, trans); 
+	
 
 	//---------------------------------------------------------------------//
 	//----------------------- Main While Loop -----------------------//
@@ -236,8 +266,10 @@ int main()
 		// Draws different meshes
 		light.Draw(lightShader, camera);
 
+		
 		for (Mesh Objects : MeshVector)
 		{
+
 			Objects.Draw(shaderProgram, camera);
 		}
 

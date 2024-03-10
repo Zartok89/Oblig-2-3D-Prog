@@ -169,19 +169,19 @@ void ReadWriteFiles::FromDataToVertexVector(std::string VertexDataFile, std::str
 			float TempY = floats[1];
 			float TempZ = floats[2];
 			GetOrigiPointsVector.emplace_back(TempX);
-			GetOrigiPointsVector.emplace_back(TempY);
-			GetOrigiPointsVector.emplace_back(TempZ);
+			GetOrigiPointsVector.emplace_back(TempY); 
+			GetOrigiPointsVector.emplace_back(TempZ); 
 			VertVec.emplace_back(TempX, TempY, TempZ);
 
 		}
 
 		for (auto TempVert : GetOrigiPointsVector)
 		{
-			TotalVertPoints += TempVert;
+			TotalVertPoints += TempVert; 
 		}
 
 		ObjectOrigo = TotalVertPoints / GetOrigiPointsVector.size();
-		OrigoVector.emplace_back(ObjectOrigo);
+		getOrigoVector.emplace_back(ObjectOrigo,ObjectOrigo,ObjectOrigo); 
 
 		std::string LineCoords;
 		std::vector<glm::vec2> TextCordsVec;

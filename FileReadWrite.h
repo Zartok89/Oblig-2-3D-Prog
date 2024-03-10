@@ -19,7 +19,7 @@ public:
 	void SubdivideData(std::vector<Vertex>& VerticesVector, std::vector<Vertex>& NewSubdividedDataFile);
 	void RemovingUnwantedChars(std::string& Line);
 
-	std::vector<float> OrigoVector;
+	std::vector<glm::vec3> getOrigoVector;
 
 	float ObjectOrigo = 0;
 	float TotalVertPoints = 0;
